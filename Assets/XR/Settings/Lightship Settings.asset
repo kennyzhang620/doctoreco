@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7abc3dbfe57c4ad49b19309f187d9e1a, type: 3}
   m_Name: Lightship Settings
   m_EditorClassIdentifier: 
-  _apiKey: 
+  _apiKey: oRdxThIWtrFoeBgzQKkmCmvgWO2D7untt1JH4OqOyeuGrO7QSynxDWU1fUDKoVKD2dsbhG
   _useLightshipDepth: 1
   _preferLidarIfAvailable: 1
   _useLightshipMeshing: 1
@@ -21,6 +21,20 @@ MonoBehaviour:
   _useLightshipPersistentAnchor: 1
   _useLightshipObjectDetection: 1
   _useLightshipWorldPositioning: 1
+  _locationAndCompassDataSource: 0
+  _spoofLocationInfo:
+    _latitude: 37.795322
+    _longitude: -122.39243
+    _timestamp: 123456
+    _altitude: 16
+    _horizontalAccuracy: 10
+    _verticalAccuracy: 10
+  _spoofCompassInfo:
+    _magneticHeading: 90
+    _trueHeading: 1.43
+    _headingAccuracy: 1
+    _rawVector: {x: 0.1, y: 0.2, z: 0.3}
+    _timestamp: 123456
   _unityLogLevel: 3
   _fileLogLevel: 5
   _stdoutLogLevel: 5
@@ -42,3 +56,5 @@ MonoBehaviour:
     _runPlaybackManually: 0
     _loopInfinitely: 0
     _numberOfIterations: 1
+    _startFrame: 0
+    _endFrame: -1
