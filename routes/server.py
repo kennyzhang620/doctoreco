@@ -57,7 +57,9 @@ async def testd():
     return generate_localised_coords((49.1861691, -123.10055030000001), test['routes'])
 
 @app.get("/route/")
-async def get_route(origin_lat: float, origin_lon: float, destination_lat: float, destination_lon: float):
+async def get_route(origin_lat: float, origin_lon: float, destination_lat: float, destination_lon: float, skey: str):
+    if skey != os.environ.get("SECRET_KEY"):
+        return []
     print(origin_lat, origin_lon, destination_lat, destination_lon)
     v = get_route_from_google(origin_lat, origin_lon, destination_lat, destination_lon)
     if v:
