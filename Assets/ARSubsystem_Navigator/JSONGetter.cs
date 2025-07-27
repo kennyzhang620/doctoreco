@@ -72,7 +72,7 @@ public class JSONGetter : MonoBehaviour
                 foreach (var x in b.coords)
                 {
                     print("Item=> "+ x.lat);
-                    pg.paths.Add(new Vector2((float)x.lat, (float)x.lon));
+                    pg.paths.Add(new PointCoords(new Vector2((float)x.lat, (float)x.lon), x.instruction));
                 }
                 // Optional: parse JSON here using JsonUtility or another JSON library
                 // Example: MyData data = JsonUtility.FromJson<MyData>(jsonText);

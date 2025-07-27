@@ -1,14 +1,28 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
+
+public class PointCoords
+{
+    public Vector2 coords;
+    public string instruction;
+
+    public PointCoords(Vector2 xy, string instr)
+    {
+        coords = xy;
+        instruction = instr;
+    }
+}
 
 public class PointGenerator : MonoBehaviour
 {
     public Vector2 test_origin;
     public Vector2[] testPaths;
-    public List<Vector2> paths = new List<Vector2>();
+    public List<PointCoords> paths = new List<PointCoords>();
     public AdjustAngle AA;
     public StretchCubeBetweenPoints linegen;
+    public Text textG;
 
     public bool test = false;
     List<GameObject> currSpawn = new List<GameObject>();
@@ -64,7 +78,9 @@ public class PointGenerator : MonoBehaviour
         for (int i = curr_ind; i < max_ind; i++)
         {
             print(i);
-            var xy = paths[i];
+            var xy = paths[i].coords;
+            if (i+1 < paths.Count)
+                textG.text = paths[i+1].instruction;
 
             if (test)
                 xy = LatLong_xy(test_origin, testPaths[i]);
@@ -86,8 +102,15 @@ public class PointGenerator : MonoBehaviour
         // print(rs.magnitude);
         if (rs.magnitude < MinDist)
         {
-            curr_ind++; max_ind++;
-            GeneratePOI();
+            if (max_ind + 1 < paths.Count)
+            {
+                curr_ind++; max_ind++;
+                GeneratePOI();
+            }
+            else
+            {
+                textG.text = "Arrived at destination";
+            }
         }
 
         var thet = Mathf.Atan(rs.z / rs.x) * Mathf.Rad2Deg;
