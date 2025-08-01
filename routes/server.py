@@ -3,6 +3,7 @@ from fastapi import FastAPI
 import requests
 from dotenv import load_dotenv
 import os
+from transformers import pipeline
 
 app = FastAPI()
 load_dotenv()
@@ -66,3 +67,19 @@ async def get_route(origin_lat: float, origin_lon: float, destination_lat: float
         return generate_localised_coords((origin_lat, origin_lon), v['routes'])
     else:
         return []
+    
+classifier = pipeline("sentiment-analysis")
+
+
+@app.post("/predict")
+async def predict(request: Request):
+    data = await request.json()
+    if not isinstance(data, list):
+        return {"error": "Expected a list of JSON objects"}
+
+    texts = [item.get("text") for item in data if "text" in item]
+    if not texts:
+        return {"error": "Expected JSON to have text field"}
+
+    results = classifier(texts)
+    return results
