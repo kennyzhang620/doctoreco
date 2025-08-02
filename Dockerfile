@@ -30,6 +30,8 @@ RUN adduser \
     --uid "${UID}" \
     appuser
 
+RUN chown -R appuser /app
+
 # Download dependencies as a separate step to take advantage of Docker's caching.
 # Leverage a cache mount to /root/.cache/pip to speed up subsequent builds.
 # Leverage a bind mount to requirements.txt to avoid having to copy them into
