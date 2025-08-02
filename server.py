@@ -28,6 +28,26 @@ def get_route_from_google(origin_lat, origin_lon, destination_lat, destination_l
     response.raise_for_status()
     return response.json()
 
+
+'''
+curl --location 'https://api.zembra.io/listing/find?name=Eagle+Ridge+Hospital' \
+--header 'Authorization: Bearer abcd' > out.json
+'''
+
+def get_results_from_zambra(query: str):
+    api_key = os.environ.get("ZABRA_API_KEY")
+   # print(origin_lat, origin_lon, destination_lat, destination_lon)
+    if not api_key:
+        raise RuntimeError("ZAMBRA_API_KEY environment variable not set")
+    url = "https://api.zembra.io/listing/find?name=" + query
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization: Bearer": api_key,
+    }
+    response = requests.get(url, headers=headers)
+    response.raise_for_status()
+    return response.json()
+
 # Equirectangular conversion function
 def latlon_to_xy(origin, points):
     R = 6371000  # Earth radius in meters
@@ -56,6 +76,17 @@ test = {'routes': [{'legs': [{'steps': [{'distanceMeters': 243, 'staticDuration'
 @app.get("/test/")
 async def testd():
     return generate_localised_coords((49.1861691, -123.10055030000001), test['routes'])
+
+@app.get("/queryzambra/")
+async def get_zambras(query: str, skey: str):
+    if skey != os.environ.get("SECRET_KEY"):
+        return []
+
+    v = get_results_from_zambra(query)
+    if v:
+        return v["data"]["agoda"].filter(lambda x: (query in x.name))
+    else:
+        return []
 
 @app.get("/route/")
 async def get_route(origin_lat: float, origin_lon: float, destination_lat: float, destination_lon: float, skey: str):
