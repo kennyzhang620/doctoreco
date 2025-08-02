@@ -14,6 +14,9 @@ public class APIWorkflow : MonoBehaviour
 {
     [SerializeField] private string prompt;
     [SerializeField] private string placesSearchTerm; //this is a stand in
+    [SerializeField] private string clinicName;
+    [SerializeField] private string cityName;
+    [SerializeField] private string rateMDSlug;
 
     private string geminiURL = "https://script.google.com/macros/s/AKfycbzTUcx1vJBLsPVtKbyQk4sya396lEDL8r7RiAa8Zzbbs7W9NsWJ3mdAIsCl8TNsMl8Psg/exec";
     private string placesGetNearbyURL = "https://script.google.com/macros/s/AKfycbx5ayZNlCFvQU1TMrhsp7L8D0b9jKN9gTVlJHIUAmk7ejlDsAVPN1_2s60ooLt9O98/exec";
@@ -23,10 +26,13 @@ public class APIWorkflow : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space)) {
-            Debug.Log(prompt);
+            //Debug.Log(prompt);
             StartCoroutine(AskGemini());
             //Debug.Log(placesSearchTerm);
             //StartCoroutine(FetchPlaces(placesSearchTerm));
+            //StartCoroutine(GetZembraSlug(clinicName, cityName));
+            //StartCoroutine(CreateZembraListingJob(rateMDSlug));
+            //StartCoroutine(GetZembraReviews(rateMDSlug));
         }
     }
 
@@ -109,6 +115,77 @@ public class APIWorkflow : MonoBehaviour
         else {
             Debug.LogError(request.error);
         }
+    }
+
+    private string slugURL = "https://script.google.com/macros/s/AKfycby6HBor67G2E8-eWjjVZVr7uS-4JYY_D_zaoVPIsmbKZVi9lKIGC3OWX5eHaQeDDxQq/exec";
+
+    //currently not very functioning. 
+    private IEnumerator GetZembraSlug(string placeName, string placeCity)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("businessName", placeName);
+        form.AddField("city", placeCity);
+
+        UnityWebRequest www = UnityWebRequest.Post(slugURL, form);
+        yield return www.SendWebRequest();
+
+        string response = "";
+
+        if (www.result == UnityWebRequest.Result.Success) {
+            response = www.downloadHandler.text;
+        }
+        else {
+            response = www.error;
+        }
+
+        Debug.Log(response);
+
+        CreateZembraListingJob(response);//which should be the slug
+    }
+
+    //should be called before GetZembraReviews on the same slug, retrieved from GetZembraSlug
+    private string createJobURL = "https://script.google.com/macros/s/AKfycbzmxoQwYN2UC1STXZvrGJsspQmrQDNfKxFO2PYzGkWSQhy9pDEYB34QrtmTBa7qJzn3hw/exec";
+    private IEnumerator CreateZembraListingJob(string slug)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("slug", slug);
+
+        UnityWebRequest www = UnityWebRequest.Post(createJobURL, form);
+        yield return www.SendWebRequest();
+
+        string response = "";
+
+        if (www.result == UnityWebRequest.Result.Success) {
+            response = www.downloadHandler.text;
+        }
+        else {
+            response = www.error;
+        }
+
+        Debug.Log(response);
+    }
+
+    private string getReviewsURL = "https://script.google.com/macros/s/AKfycbxlmfHGsVStJCyL526pteOumvqSCRtjB03CwGTs5VSC5Q1Mbs3a9wUHdiQDd640-Lfz9A/exec";
+    private IEnumerator GetZembraReviews(string slug)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("slug", slug);
+        form.AddField("jobId", "");
+        form.AddField("uid", "");
+
+        UnityWebRequest www = UnityWebRequest.Post(getReviewsURL, form);
+        yield return www.SendWebRequest();
+
+        string response = "";
+
+        if (www.result == UnityWebRequest.Result.Success) {
+            response = www.downloadHandler.text;
+        }
+        else {
+            response = www.error;
+        }
+
+        Debug.Log(response);
     }
 
     void Start () {
