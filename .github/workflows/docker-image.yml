@@ -42,7 +42,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
-          images: novanodepro/novanodepro_prod
+          images: kennyzhang062/novanode-site-stg1
 
       - name: Build and push Docker image
         id: push
