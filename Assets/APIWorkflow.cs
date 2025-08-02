@@ -27,10 +27,10 @@ public class APIWorkflow : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space)) {
             //Debug.Log(prompt);
-            StartCoroutine(AskGemini());
+            //StartCoroutine(AskGemini());
             //Debug.Log(placesSearchTerm);
             //StartCoroutine(FetchPlaces(placesSearchTerm));
-            //StartCoroutine(GetZembraSlug(clinicName, cityName));
+            StartCoroutine(GetZembraSlug(clinicName, cityName));
             //StartCoroutine(CreateZembraListingJob(rateMDSlug));
             //StartCoroutine(GetZembraReviews(rateMDSlug));
         }
@@ -117,7 +117,7 @@ public class APIWorkflow : MonoBehaviour
         }
     }
 
-    private string slugURL = "https://script.google.com/macros/s/AKfycby6HBor67G2E8-eWjjVZVr7uS-4JYY_D_zaoVPIsmbKZVi9lKIGC3OWX5eHaQeDDxQq/exec";
+    private string slugURL = "https://script.google.com/macros/s/AKfycbw7qGM0BfSsgwARCSce13n9fhOPO5N0GgZ7DjRRzqK747_64z4glhn2luKpkVvUJ7hf/exec";
 
     //currently not very functioning. 
     private IEnumerator GetZembraSlug(string placeName, string placeCity)
