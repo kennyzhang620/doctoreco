@@ -6,6 +6,7 @@ using UnityEngine;
 public class UIStateHandler : MonoBehaviour
 {
     // SINGLETON CLASS FOR MANAGING STATE
+    public static UIStateHandler UISingleton;
     public enum Page
     {
         start,
@@ -24,6 +25,7 @@ public class UIStateHandler : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        UISingleton = this;
         pageStack = new List<GameObject> { StartView, QueryView, MapView };
     }
 

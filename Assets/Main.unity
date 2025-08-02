@@ -591,6 +591,7 @@ GameObject:
   - component: {fileID: 326493498}
   - component: {fileID: 326493497}
   - component: {fileID: 326493501}
+  - component: {fileID: 326493502}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -673,9 +674,9 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1580504237}
   - {fileID: 1617592514}
   - {fileID: 1903846153}
+  - {fileID: 1580504237}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -699,6 +700,19 @@ MonoBehaviour:
   QueryView: {fileID: 1903846152}
   MapView: {fileID: 1617592513}
   pageStack: []
+--- !u!114 &326493502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 326493496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daf65782842875f41ad8b1498ce3a6a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  envJson: {fileID: 4900000, guid: e2a69dbdf4db6da4d885b13bbea02746, type: 3}
 --- !u!1 &735133294
 GameObject:
   m_ObjectHideFlags: 0
@@ -1307,9 +1321,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UIStateHandler, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 1903846155}
+        m_TargetAssemblyTypeName: HandlePatientQuery, Assembly-CSharp
+        m_MethodName: ProcessQuery
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1765,6 +1779,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1903846153}
+  - component: {fileID: 1903846154}
+  - component: {fileID: 1903846155}
   m_Layer: 5
   m_Name: QueryPage
   m_TagString: Untagged
@@ -1795,6 +1811,38 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1903846154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1903846152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f134487e736a6146afbf87d750a76f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currOutPut: 
+  prompt: 'You''re a seasoned doctor. What kind of specialist would one want to see
+    for this? Respond only with the type of physician you feel is best suited for
+    this situation. '
+  isProcessing: 0
+  state: 0
+--- !u!114 &1903846155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1903846152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9be10b7762fbd1a469d10a660b9d5fac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  queryField: {fileID: 735133296}
+  handler: {fileID: 1903846154}
 --- !u!1 &1931650483
 GameObject:
   m_ObjectHideFlags: 0
