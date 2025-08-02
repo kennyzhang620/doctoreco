@@ -20,7 +20,7 @@ public class NavigationData
 public class JSONGetter : MonoBehaviour
 {
     [Header("Set the URL of the JSON endpoint")]
-    public string jsonUrl = "https://test2.novanode-test.cc/test/";
+    public string jsonUrl = "https://testfh.novanode-test.cc/test/";
     public PointGenerator pg;
 
     double lat, longt;
@@ -39,7 +39,7 @@ public class JSONGetter : MonoBehaviour
             lat = testSource.x; longt = testSource.y;
         }
 
-        jsonUrl = "https://test2.novanode-test.cc/route/?origin_lat=" + lat.ToString() + "&origin_lon=" + longt.ToString() +"&destination_lat=" + dest.x.ToString() + "&destination_lon=" + dest.y.ToString() + "&skey=o98765redfghu";
+        jsonUrl = "https://testfh.novanode-test.cc/route/?origin_lat=" + lat.ToString() + "&origin_lon=" + longt.ToString() +"&destination_lat=" + dest.x.ToString() + "&destination_lon=" + dest.y.ToString() + "&skey=o98765redfghu";
 
         StartCoroutine(GetJsonFromUrl(jsonUrl));
     }
