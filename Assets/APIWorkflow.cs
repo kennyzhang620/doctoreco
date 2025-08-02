@@ -30,16 +30,18 @@ public class APIWorkflow : MonoBehaviour
             //StartCoroutine(AskGemini());
             //Debug.Log(placesSearchTerm);
             //StartCoroutine(FetchPlaces(placesSearchTerm));
-            StartCoroutine(GetZembraSlug(clinicName, cityName));
+            //StartCoroutine(GetZembraSlug(clinicName, cityName));
             //StartCoroutine(CreateZembraListingJob(rateMDSlug));
             //StartCoroutine(GetZembraReviews(rateMDSlug));
         }
     }
 
+    // input: string prompt for gemini
+    // output: string, single-word keyword to be plugged into FetchPlaces
     private string promptAddOn = "I'd like to see a medical specialist for these symptoms. Could you give me a single search term that can be put into google maps to look for a doctor in a one-word response?";
-    private IEnumerator AskGemini() {
+    private IEnumerator AskGemini(string geminiPrompt) {
         WWWForm form = new WWWForm();
-        form.AddField("parameter", prompt + promptAddOn);
+        form.AddField("parameter", geminiPrompt + promptAddOn);
 
         UnityWebRequest www = UnityWebRequest.Post(geminiURL, form);
         yield return www.SendWebRequest();
@@ -64,6 +66,7 @@ public class APIWorkflow : MonoBehaviour
     private float longitude = 0;
     private int radiusMeters = 3000;
 
+    // output: JSON including a list of nearby places matching keyword criteria
     private IEnumerator FetchPlaces(string keyword)
     {
         float desiredAccuracyInMeters = 10f;
@@ -119,7 +122,10 @@ public class APIWorkflow : MonoBehaviour
 
     private string slugURL = "https://script.google.com/macros/s/AKfycbw7qGM0BfSsgwARCSce13n9fhOPO5N0GgZ7DjRRzqK747_64z4glhn2luKpkVvUJ7hf/exec";
 
-    //currently not very functioning. 
+    // input: a placename or physician name, and their location (preferably a city name)
+    // output: a string 'slug' which can be used as input for CreateZembraListingJob and
+    //          GetZembraReviews
+    // purpose: send HTTP to Zembra Listings Lookup to retrieve an access point to reviews
     private IEnumerator GetZembraSlug(string placeName, string placeCity)
     {
         WWWForm form = new WWWForm();
@@ -143,6 +149,8 @@ public class APIWorkflow : MonoBehaviour
         CreateZembraListingJob(response);//which should be the slug
     }
 
+    // input: slug string
+    // output: not relevant? 
     //should be called before GetZembraReviews on the same slug, retrieved from GetZembraSlug
     private string createJobURL = "https://script.google.com/macros/s/AKfycbzmxoQwYN2UC1STXZvrGJsspQmrQDNfKxFO2PYzGkWSQhy9pDEYB34QrtmTBa7qJzn3hw/exec";
     private IEnumerator CreateZembraListingJob(string slug)
@@ -165,6 +173,8 @@ public class APIWorkflow : MonoBehaviour
         Debug.Log(response);
     }
 
+    // input: slug string
+    // output: JSON containing list of reviews
     private string getReviewsURL = "https://script.google.com/macros/s/AKfycbxlmfHGsVStJCyL526pteOumvqSCRtjB03CwGTs5VSC5Q1Mbs3a9wUHdiQDd640-Lfz9A/exec";
     private IEnumerator GetZembraReviews(string slug)
     {
